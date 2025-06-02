@@ -1,0 +1,5 @@
+# Entorno virtual
+backend/venv/
+
+# Variables de entorno
+.env
