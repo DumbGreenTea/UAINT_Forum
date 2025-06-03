@@ -1,0 +1,21 @@
+# frontend/Dockerfile (receta)
+FROM node:18
+
+WORKDIR /app
+
+# Copiar package.json y package-lock.json para instalar dependencias
+COPY package*.json ./
+
+RUN npm install
+
+RUN npm install react-router-dom
+
+# Copiar el resto del código fuente
+COPY . .
+
+# Exponer el puerto en el que Vite corre en modo desarrollo (5173)
+EXPOSE 5173
+
+# Comando para ejecutar Vite en modo desarrollo
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
