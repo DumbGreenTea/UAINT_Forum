@@ -1,0 +1,32 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Importante para no sobrescribir node_modules del contenedor
+    # Es más explícito indicar el host 0.0.0.0 para Vite
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    # Añadir volumen para desarrollo y que --reload funcione con cambios en el código host
+    volumes:
+      - ./backend:/app
+    # No es necesario un 'command' aquí si el CMD del Dockerfile es correcto.
+    # El CMD del Dockerfile es: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
